@@ -17,20 +17,18 @@ public class DiscountHandler {
 	
 	public static void addAvailableDiscount() {
 		
-		Discount d1 = new Discount(1, 1, 2, 2, "per", 50,"Buy 2 tins of soup and get a loaf of bread half price");
+		Discount d1 = new Discount(1, 1, 2, 2,1 ,"per", 50,"Buy 2 tins of soup and get a loaf of bread half price");
 		LocalDate fd1 = LocalDate.now().minusDays(1);
 		LocalDate td1 = LocalDate.now().plusDays(5);
 		d1.setFromDate(fd1);
 		d1.setToDate(td1);
-		/*System.out.println("fd1 :: " + fd1);
-		System.out.println("td1 :: " + td1);*/
 		
 		
-		Discount d2 = new Discount(2, 4, 1, 4, "per", 10,"Apples have a 10% discount");
+		
+		Discount d2 = new Discount(2, 4, 1, 4,1, "per", 10,"Apples have a 10% discount");
 		LocalDate fd2 = LocalDate.now().plusDays(2);
 		LocalDate td2 = LocalDate.now().plusMonths(1).with(TemporalAdjusters.lastDayOfMonth());
-		/*System.out.println("fd2 :: " + fd2);
-		System.out.println("td2 :: " + td2);*/
+	
 		d2.setFromDate(fd2);
 		d2.setToDate(td2);
 		discountList.add(d1);

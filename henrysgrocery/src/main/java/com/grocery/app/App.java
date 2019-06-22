@@ -33,9 +33,7 @@ public class App
               
         System.out.println( "Menu :" + menu);
         MenuHandler.selectMenu(menu);
-        /*
-        int menu1 = in.nextInt();
-        System.out.println( "Menu :" + menu1);*/
+      
 }
     public static void main( String[] args )
     {

@@ -20,7 +20,8 @@ public class MenuHandler {
 			dh.displayDiscount();
 			break;
 		case 3: 
-			System.out.println("Discount");	
+			BillingHandler bh = new BillingHandler();
+			bh.keyInfo();
 			break;
 		case 4: 
 			System.out.println("Date change");	

@@ -8,19 +8,21 @@ public class Discount {
 	private int discountFor;
 	private int discountunit;
 	private int discountappliedOn;
+	private int discountapplyUnit;
 	private String discountType;
 	private double dicountVal;
 	private LocalDate fromDate;
 	private LocalDate toDate;
 	private String discountDesc;
 	
-	public Discount(int id, int discountFor, int discountunit, int discountappliedOn, String discountType,
+	public Discount(int id, int discountFor, int discountunit, int discountappliedOn,int discountapplyUnit, String discountType,
 			double dicountVal,String discountDesc) {
 		super();
 		this.id = id;
 		this.discountFor = discountFor;
 		this.discountunit = discountunit;
 		this.discountappliedOn = discountappliedOn;
+		this.discountapplyUnit = discountapplyUnit;
 		this.discountType = discountType;
 		this.dicountVal = dicountVal;
 		this.discountDesc = discountDesc;
@@ -85,6 +87,14 @@ public class Discount {
 
 	public void setDiscountDesc(String discountDesc) {
 		this.discountDesc = discountDesc;
+	}
+
+	public int getDiscountapplyUnit() {
+		return discountapplyUnit;
+	}
+
+	public void setDiscountapplyUnit(int discountapplyUnit) {
+		this.discountapplyUnit = discountapplyUnit;
 	}
 
 

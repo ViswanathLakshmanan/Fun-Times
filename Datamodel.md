@@ -17,6 +17,8 @@ int discountappliedOn
 String discountType(Flat,Per)
 double dicountVal
 String discountDesc
+LocalDate fromDate;
+LocalDate toDate;
 
 Billing
 ----------------
