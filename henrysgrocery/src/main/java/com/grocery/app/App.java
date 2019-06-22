@@ -2,7 +2,9 @@ package com.grocery.app;
 
 import java.util.Scanner;
 
+import com.grocery.app.handler.DiscountHandler;
 import com.grocery.app.handler.MenuHandler;
+import com.grocery.app.handler.ProductHandler;
 
 /**
  * @author viswa
@@ -30,13 +32,16 @@ public class App
         
               
         System.out.println( "Menu :" + menu);
-        MenuHandler.selectMenu(menu,in);
+        MenuHandler.selectMenu(menu);
         /*
         int menu1 = in.nextInt();
         System.out.println( "Menu :" + menu1);*/
 }
     public static void main( String[] args )
     {
+    	ProductHandler.addAvailableProduct();
+    	ProductHandler.searchProduct();
+    	DiscountHandler.addAvailableDiscount();
     	userMenu();
     }
 }

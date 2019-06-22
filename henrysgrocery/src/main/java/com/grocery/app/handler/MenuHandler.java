@@ -6,14 +6,18 @@ import com.grocery.app.App;
 
 public class MenuHandler {
 	
-	public static void selectMenu(int menu,Scanner invv) {
+	public static void selectMenu(int menu) {
 		
 		switch (menu) {
 		case 1:
-			System.out.println("Product");		
+			System.out.println("Product");	
+			ProductHandler ph = new ProductHandler();
+			ph.displayProduct();			
 			break;
 		case 2:
-			System.out.println("Discount");				
+			System.out.println("Discount");	
+			DiscountHandler dh = new DiscountHandler();
+			dh.displayDiscount();
 			break;
 		case 3: 
 			System.out.println("Discount");	
