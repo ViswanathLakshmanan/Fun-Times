@@ -24,16 +24,13 @@ public class BillingHandler {
 	
 	public static List<Billing> billingHolder = new LinkedList<>();
 	
-	
-	//public static Billing paybill = new Billing();*/
-	
 	public void keyInfo() {
 		
 		System.out.println("Enter '*' to Apply discount and bill submission");
 		System.out.println("Enter '+' to Add basket item");
 		Billing b = new Billing();
 		b.setBillNo(billingHolder.size()+1);
-		b.setBillDate(LocalDate.now());
+		b.setBillDate(DateHandler.currentDate);
 		List<BilledProduct> lstBilled = new ArrayList<>();
 		NumberFormat formatter = new DecimalFormat("#0.00");
 		Scanner in  = new Scanner(System.in);
@@ -43,13 +40,16 @@ public class BillingHandler {
 		String choice = in.nextLine();
 		
 		if(choice.equalsIgnoreCase("+")) {	
-			lstBilled.add(acceptBillItem(b, in,formatter));
+			BilledProduct bp = acceptBillItem(b, in,formatter);
+			if(bp != null)
+				lstBilled.add(bp);
 			
 		}
 		else if(choice.equalsIgnoreCase("*")) {
 			b.setBilledProduct(lstBilled);
 			b.setDiscountedItem(normalizeBill(lstBilled,b));
 			displayBill(b);
+			billingHolder.add(b);
 			break;
 		}
 		/*else {
@@ -66,16 +66,18 @@ public class BillingHandler {
 			System.out.println("|---|------------|----------|-------|----------|-------|");
 			System.out.println("|"+x.getId()+"  |"+ StringUtils.rightPad(x.getName(), 10) +"  |"+StringUtils.rightPad(x.getUnit(),7)+"   |"+StringUtils.rightPad(formatter.format(x.getPrice()),5)+"  |"
 					+StringUtils.rightPad(String.valueOf(x.getQuantity()),7)+"   |"+StringUtils.rightPad(formatter.format(x.getAmount()),5)+"  |");
-			System.out.println("|---|------------|----------|-------|----------|-------|");
+			
 			
 		});
+		System.out.println("|---|------------|----------|-------|----------|-------|");
 		
 		b.getDiscountedItem().stream().forEach( y -> {
 			System.out.println("|---------------------------------------------------------|----------|-------|");
 			System.out.println("|"+ StringUtils.rightPad(y.getDiscountDesc(), 55) +"  |"+StringUtils.rightPad(String.valueOf(y.getDiscountApply()),7)+"   |"+StringUtils.rightPad(formatter.format(y.getDiscountAmount()),5)+"  |");
-			//System.out.println("|---------------------------------------------------------|----------|-------|");
 			
 		});
+		System.out.println("|---------------------------------------------------------|----------|-------|");
+		
 		b.setTotalAmount(b.getBillAmount()-b.getDiscountAmount());
 		System.out.println("BillAmount ::" + formatter.format(b.getBillAmount()) +"           Discount  :"+formatter.format(b.getDiscountAmount())+ "      TotalAmount    : "+formatter.format(b.getTotalAmount()));
 		
@@ -83,7 +85,7 @@ public class BillingHandler {
 	
 	public BilledProduct acceptBillItem(Billing b,Scanner in,NumberFormat formatter) {
 		
-		BilledProduct billedProduct = null;
+		 BilledProduct billedProduct = null;
 		try {			
 			
 	        System.out.println( "Enter the Itemcode");
@@ -91,7 +93,7 @@ public class BillingHandler {
 	        int qty;
 		
         
-        Product product= ProductHandler.searchproductList.stream()
+        Product product= ProductHandler.productList.stream()
         	.filter(p ->p.getId() == procode).findFirst()
         	.orElseThrow(() -> new IllegalArgumentException("Item code not valid"));
         
@@ -102,22 +104,29 @@ public class BillingHandler {
         	 System.out.println( "Enter the Quantity in  "+product.getUnit()+" ");
         	 qty = in.nextInt();
         }
+        
         double amount = calculateAmount(qty,product.getPrice());
         if(amount == 0) {
         	throw new IllegalArgumentException("incorrect entry");
         }
+        
+        
         b.setBillAmount(b.getBillAmount()+amount);
         System.out.println(product.getName()+"  price : "+ formatter.format(product.getPrice())
             +"  amount : "+formatter.format(amount) +" total : "+formatter.format(b.getBillAmount()) );
         billedProduct = new BilledProduct(product.getId(),
         		product.getName(),product.getUnit(),product.getPrice(),qty,amount);
 		
+        return billedProduct;
 		}
 		catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
-			acceptBillItem(b,in,formatter);
+			return billedProduct;
+			
 		}
-		return billedProduct;
+		
+		
+		
 		
 	}
 	
@@ -132,16 +141,21 @@ public class BillingHandler {
 	
 	public List<DiscountedItem> normalizeBill(List<BilledProduct> lstBilled,Billing b) {
 		
-		System.out.println("T------------");
 		List<DiscountedItem> discitem = new ArrayList<>();
 		Map<Integer,BilledProduct> hashMap = new HashMap<>();
-		System.out.println("1------");
+		
 		lstBilled.stream().forEach( x -> {
+
 			if(hashMap.containsKey(x.getId())){
 				BilledProduct exist = hashMap.get(x.getId());
-			    exist.setQuantity(exist.getQuantity()+x.getQuantity());
-			    exist.setAmount(exist.getAmount() + x.getAmount());
-			    hashMap.put(x.getId(), exist);
+				BilledProduct updated = new BilledProduct();
+				updated.setId(x.getId());
+				updated.setName(x.getName());
+				updated.setPrice(x.getPrice());
+				updated.setQuantity(exist.getQuantity()+x.getQuantity());
+				updated.setAmount(exist.getAmount() + x.getAmount());
+				updated.setUnit(x.getUnit());
+			    hashMap.put(x.getId(), updated);
 			}
 			else {
 			
@@ -149,6 +163,8 @@ public class BillingHandler {
 			}
 					
 		});
+		
+		
 		hashMap.forEach( (k,v) -> {
 			Discount d = DiscountHandler.discountList.stream().filter(p -> p.getDiscountFor() == k)
 			.filter(p -> p.getFromDate().compareTo(b.getBillDate())<= 0

@@ -40,13 +40,13 @@ public class DiscountHandler {
 	
 	
 	public void displayDiscount() {		
-		//NumberFormat formatter = new DecimalFormat("#0.00");     
-				
+					
 		discountList.forEach(x -> {
 			System.out.println("|---|---------------------------------------------------------|----------|-------|");
 			System.out.println("|"+x.getId()+"  |"+ StringUtils.rightPad(x.getDiscountDesc(), 55) +"  |"+StringUtils.rightPad(x.getDiscountType(),7)+"   |"+StringUtils.rightPad(String.valueOf(x.getDicountVal()),5)+"  |");
 			//System.out.println("---------------------------------------");
 		});
+		System.out.println("|---|---------------------------------------------------------|----------|-------|");
 	}
 
 }

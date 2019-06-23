@@ -24,22 +24,33 @@ public class MenuHandler {
 			bh.keyInfo();
 			break;
 		case 4: 
-			System.out.println("Date change");	
-			break;		
+			ReportHandler rh = new ReportHandler();
+			rh.dailyReport();
+			break;	
+		case 5: 
+			DateHandler dateh = new DateHandler();
+			dateh.dateselection();
+			break;	
 
 		default:
-			System.out.println("Type Id 1 to 4");
+			System.out.println("Type Id 1 to 5");
 			//App.userMenu();
 			break;
 		}
 		 Scanner in  = new Scanner(System.in);
-	     //System.out.println( "Enter the <<id>> to select the Menu Item");
-	        
-	       // int menu = in.nextInt();
+	   
 		System.out.println("Press '*' Goback to Main menu");
-		String main = in.nextLine();
-		if(main.equalsIgnoreCase("*"))
-			App.userMenu();
+		while(true){
+			String main = in.nextLine();
+			if(main.equalsIgnoreCase("*")) {
+				App.userMenu();
+				break;
+			}
+			
+		}
+		
+		
+			
 	}
 	
 	

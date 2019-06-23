@@ -12,9 +12,7 @@ import com.grocery.app.model.Product;
 
 public class ProductHandler {
 	
-	public static List<Product> productList = new LinkedList();
-	
-	public static List<Product> searchproductList ;
+	public static List<Product> productList = new ArrayList<>();
 	
 	public static void addAvailableProduct() {
 		
@@ -29,18 +27,16 @@ public class ProductHandler {
 		
 	}
 	
-	public static void searchProduct() {
-		searchproductList = new ArrayList<Product>(productList);
-	}
-	
+		
 	public void displayProduct() {		
 		NumberFormat formatter = new DecimalFormat("#0.00");     
 				
 		productList.forEach(x -> {
 			System.out.println("|---|------------|----------|-------|");
 			System.out.println("|"+x.getId()+"  |"+ StringUtils.rightPad(x.getName(), 10) +"  |"+StringUtils.rightPad(x.getUnit(),7)+"   |"+StringUtils.rightPad(formatter.format(x.getPrice()),5)+"  |");
-			//System.out.println("---------------------------------------");
+			
 		});
+		System.out.println("|---|------------|----------|-------|");
 			
 		
 	
